@@ -15,8 +15,8 @@
       "ts-node": "^10.9.1"
     },
     "scripts": {
-      "start": "node dist/index.js",  // Para rodar o código compilado
-      "dev": "ts-node src/index.ts"   // Para rodar diretamente os arquivos .ts com ts-node
+      "start": "node dist/index.js",  
+      "dev": "ts-node src/index.ts"   
     },
     "description": "oi",
     "keywords": [],
