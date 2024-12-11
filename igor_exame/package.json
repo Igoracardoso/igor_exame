@@ -1,24 +1,29 @@
 {
-    "name": "meu-projeto",
-    "version": "1.0.0",
-    "main": "index.js",
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "CommonJS",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "devDependencies": {
+        "ts-node": "^10.9.2"
+    },
     "dependencies": {
         "@types/express": "^5.0.0",
         "@types/jsonwebtoken": "^9.0.7",
         "@types/node": "^22.10.2",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "jsonwebtoken": "^8.5.1"
-    },
-    "devDependencies": {
-        "typescript": "^4.9.5"
-    },
-    "scripts": {
-        "start": "node dist/index.js",
-        "dev": "tsc && node dist/index.js"
-    },
-    "description": "oi",
-    "keywords": [],
-    "author": "",
-    "license": "ISC"
+        "jsonwebtoken": "^9.0.2",
+        "typescript": "^5.7.2"
+    }
 }
