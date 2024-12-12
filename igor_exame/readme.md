@@ -16,7 +16,7 @@ Este projeto é um backend para gerenciar um sistema de cadastro de missões de 
 1. Clone o repositório:
    ```bash
    git clone <URL_DO_REPOSITORIO>
-   cd space-exploration
+   cd igor_exame
 
 2. Instale as dependências:
 
