@@ -1,8 +1,26 @@
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
+
 dotenv.config();
 
-export const config = {
-  dbUrl: process.env.DB_URL || 'sqlite::memory:', 
-  jwtSecret: process.env.JWT_SECRET || 'supersecretkey',
-  jwtExpiration: process.env.JWT_EXPIRATION || '1h',
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false // Necessário para conexões SSL
+    }
+});
+
+// Função para testar a conexão
+const testConnection = async () => {
+    try {
+        const res = await pool.query('SELECT NOW()');
+        console.log('Conexão bem-sucedida:', res.rows[0]);
+    } catch (err) {
+        console.error('Erro ao conectar ao banco de dados', err);
+    } finally {
+        await pool.end();
+    }
 };
+
+testConnection();
+
