@@ -1,18 +1,39 @@
-import { Schema, model } from 'mongoose';
+import { Pool } from 'pg';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
 
-const UsuarioSchema = new Schema({
-  nome: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  senha: { type: String, required: true }
+dotenv.config();
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 });
 
-// Método para hash da senha antes de salvar
-UsuarioSchema.pre('save', async function(next: () => void) {
-  if (this.isModified('senha')) {
-    this.senha = await bcrypt.hash(this.senha, 10);
-  }
-  next();
-});
+export class Usuario {
+    id?: number;
+    nome: string;
+    email: string;
+    senha: string;
 
-export const Usuario = model('Usuario', UsuarioSchema);
+    constructor(usuarioData: any) {
+        this.nome = usuarioData.nome;
+        this.email = usuarioData.email;
+        this.senha = usuarioData.senha; // A senha deve ser hashada antes de salvar no banco.
+    }
+
+    static async criar(usuario: Usuario) {
+        const hashedPassword = await bcrypt.hash(usuario.senha, 10);
+        const result = await pool.query(
+            'INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3) RETURNING *',
+            [usuario.nome, usuario.email, hashedPassword]
+        );
+        return result.rows[0];
+    }
+
+    static async encontrarPorEmail(email: string) {
+        const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+        return result.rows[0];
+    }
+}
